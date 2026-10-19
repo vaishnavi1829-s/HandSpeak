@@ -1,0 +1,43 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1788371328.801411    4412 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1788371332.108047    4412 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1788371335.311800    4412 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+========================================================================
+HandSpeak - Webcam Preprocessing Diagnostic (A->Y investigation)
+========================================================================
+Model: handspeak_cnn_improved.h5
+  input : (None, 28, 28, 1)
+  output: (None, 26)
+  label mapping: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+------------------------------------------------------------------------
+Letter DIRECT top-3                    WEBCAM top-3                    
+------------------------------------------------------------------------
+A      A:100.0%, Y:0.0%, J:0.0%        A:94.4%, G:2.2%, N:1.2%         
+Y      Y:100.0%, H:0.0%, I:0.0%        H:99.3%, Y:0.6%, P:0.1%         
+B      B:100.0%, W:0.0%, F:0.0%        B:99.7%, P:0.1%, I:0.1%         
+C      C:100.0%, L:0.0%, O:0.0%        C:98.3%, G:0.8%, L:0.4%         
+D      D:100.0%, L:0.0%, R:0.0%        D:50.1%, M:14.8%, I:12.6%       
+E      E:100.0%, O:0.0%, A:0.0%        E:75.2%, G:23.2%, O:1.3%        
+I      I:100.0%, T:0.0%, F:0.0%        G:57.2%, I:22.6%, P:11.0%       
+S      S:100.0%, N:0.0%, R:0.0%        P:90.5%, O:8.0%, Q:1.3%         
+T      T:100.0%, G:0.0%, X:0.0%        G:49.2%, H:48.2%, Q:1.2%        
+X      X:100.0%, C:0.0%, M:0.0%        X:99.8%, O:0.1%, E:0.1%         
+
+========================================================================
+Deep dive: what does the webcam path do to a clean SL-MNIST 'A'?
+========================================================================
+  Otsu foreground fraction (after small-region normalization): 0.150
+  localized crop shape        : (222, 222)
+  foreground mean (hand)      : 124.7
+  background mean             : 242.3
+  polarity inversion applied  : False
+  final 28x28 center mean     : 0.568 (dark hand = low)
+  final 28x28 border mean     : 0.931 (light bg = high)
+  final polarity hand<bg      : True
+  MAE vs original SL-MNIST A  : 0.160 (0=identical)
+  WEBCAM-path 'A' prediction  : [('A', 0.9444339871406555), ('G', 0.02204439975321293), ('N', 0.012046705931425095)]

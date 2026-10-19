@@ -1,0 +1,65 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1788503373.449852   14024 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1788503382.066947   14024 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1788503389.220991   14024 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+==============================================================================
+HandSpeak - Webcam Preprocessing Verification (all 26 letters A-Z)
+==============================================================================
+Model : handspeak_cnn_improved.h5  (None, 28, 28, 1) -> (None, 26)
+Label : ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+Max samples per letter: 60
+
+Ltr    n | DIRECT acc | WEBCAM acc |  avg conf | Webcam top confusion
+------------------------------------------------------------------------------
+A     60 |     100.0% |      60.0% |     86.2% | H:24
+B     60 |     100.0% |      46.7% |     74.3% | P:15, G:10, I:3
+C     60 |     100.0% |      38.3% |     79.1% | G:18, H:7, O:6
+D     60 |     100.0% |      18.3% |     80.7% | P:23, G:19, H:3
+E     60 |     100.0% |      23.3% |     74.1% | P:26, H:11, I:3
+F     60 |     100.0% |      48.3% |     71.4% | P:13, G:13, O:3
+G     60 |     100.0% |      68.3% |     90.6% | H:19
+H     60 |     100.0% |      80.0% |     93.3% | G:10, P:1, Y:1
+I     60 |     100.0% |      40.0% |     75.6% | P:17, H:7, A:4
+J     60 |     100.0% |     100.0% |     99.5% | -
+K     60 |     100.0% |      21.7% |     72.7% | O:18, P:16, G:9
+L     60 |     100.0% |      30.0% |     77.2% | H:18, P:12, G:6
+M     60 |     100.0% |      40.0% |     83.9% | P:23, H:8, A:4
+N     60 |     100.0% |      33.3% |     86.8% | P:15, H:12, A:7
+O     60 |     100.0% |      83.3% |     90.2% | G:6, P:2, H:1
+P     60 |     100.0% |      86.7% |     93.9% | G:8
+Q     60 |     100.0% |      78.3% |     88.4% | P:9, H:2, G:2
+R     60 |     100.0% |       0.0% |     79.8% | K:18, G:11, P:10, O:10
+S     60 |     100.0% |      10.0% |     66.2% | P:19, I:16, H:7
+T     60 |     100.0% |      16.7% |     83.9% | H:25, G:20, P:3
+U     60 |     100.0% |      15.0% |     77.7% | P:31, H:7, K:4
+V     60 |     100.0% |      20.0% |     75.6% | P:27, G:16, H:2
+W     60 |     100.0% |       5.0% |     72.4% | B:21, P:19, J:8, G:3
+X     60 |     100.0% |      35.0% |     81.7% | G:17, H:9, L:7
+Y     60 |     100.0% |      26.7% |     84.9% | H:17, P:16, G:7
+Z     60 |     100.0% |       0.0% |     89.2% | O:31, Q:29
+------------------------------------------------------------------------------
+DIRECT overall  : 1560/1560 (100.00%)
+WEBCAM overall  : 615/1560 (39.42%)
+Degraded letters (webcam > 5pp below direct): ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+Difficult-pair inspection:
+  A vs Y:  'A' webcam-top-1 distribution {'A': 60.0, 'H': 40.0}
+        'Y' webcam-top-1 distribution {'H': 28.3, 'P': 26.7, 'Y': 26.7}
+  C vs O:  'C' webcam-top-1 distribution {'C': 38.3, 'G': 30.0, 'H': 11.7}
+        'O' webcam-top-1 distribution {'O': 83.3, 'G': 10.0, 'P': 3.3}
+  D vs P:  'D' webcam-top-1 distribution {'P': 38.3, 'G': 31.7, 'D': 18.3}
+        'P' webcam-top-1 distribution {'P': 86.7, 'G': 13.3}
+  U vs V:  'U' webcam-top-1 distribution {'P': 51.7, 'U': 15.0, 'H': 11.7}
+        'V' webcam-top-1 distribution {'P': 45.0, 'G': 26.7, 'V': 20.0}
+  E vs M:  'E' webcam-top-1 distribution {'P': 43.3, 'E': 23.3, 'H': 18.3}
+        'M' webcam-top-1 distribution {'M': 40.0, 'P': 38.3, 'H': 13.3}
+  M vs N:  'M' webcam-top-1 distribution {'M': 40.0, 'P': 38.3, 'H': 13.3}
+        'N' webcam-top-1 distribution {'N': 33.3, 'P': 25.0, 'H': 20.0}
+  N vs S:  'N' webcam-top-1 distribution {'N': 33.3, 'P': 25.0, 'H': 20.0}
+        'S' webcam-top-1 distribution {'P': 31.7, 'I': 26.7, 'H': 11.7}
+  S vs T:  'S' webcam-top-1 distribution {'P': 31.7, 'I': 26.7, 'H': 11.7}
+        'T' webcam-top-1 distribution {'H': 41.7, 'G': 33.3, 'T': 16.7}

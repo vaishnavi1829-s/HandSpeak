@@ -1,0 +1,60 @@
+Webcam-domain model comparison (same held-out webcam validation split)
+======================================================================
+Validation samples       : 394
+Previous improved acc    : 11.9289%
+New webcam-finetuned acc : 96.1929%
+Absolute improvement     : +84.2640 pp
+
+Per-letter comparison (previous -> new):
+Letter  Prev%     New%    Support
+----------------------------------------
+A         0.00%   93.33%       15
+B        13.33%   73.33%       15
+C         6.67%  100.00%       15
+D         6.67%  100.00%       15
+E         6.67%   86.67%       15
+F         6.67%   93.33%       15
+G         0.00%   93.33%       15
+H        60.00%  100.00%       15
+I        20.00%   93.33%       15
+J         0.00%  100.00%       15
+K         0.00%  100.00%       15
+L         5.88%   82.35%       17
+M         0.00%  100.00%       15
+N        26.67%  100.00%       15
+O         0.00%  100.00%       15
+P        86.67%  100.00%       15
+Q         0.00%  100.00%       15
+R         0.00%  100.00%       15
+S        20.00%   93.33%       15
+T         0.00%  100.00%       15
+U         0.00%  100.00%       15
+V         0.00%  100.00%       15
+W        47.06%  100.00%       17
+X         0.00%   93.33%       15
+Y         0.00%  100.00%       15
+Z         0.00%  100.00%       15
+
+Previous improved model top confusions:
+    T -> Q: 15
+    U -> Q: 13
+    V -> Q: 13
+    J -> P: 10
+    Q -> H: 8
+    Z -> Q: 8
+    W -> Q: 7
+    X -> Q: 7
+    Y -> Q: 7
+    B -> J: 6
+
+New webcam model top confusions:
+    B -> G: 2
+    A -> B: 1
+    B -> C: 1
+    B -> R: 1
+    E -> F: 1
+    E -> O: 1
+    F -> E: 1
+    G -> C: 1
+    I -> H: 1
+    L -> K: 1

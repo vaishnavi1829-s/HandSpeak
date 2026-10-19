@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HandSpeak — AI-powered hand sign recognition system for people with speech and hearing impairments." />
+  <title>HandSpeak — AI-Powered Hand Sign Recognition System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <!-- Decorative animated background (non-interactive) -->
+  <div class="bg-stage" aria-hidden="true">
+    <div class="bg-orb bg-orb--one"></div>
+    <div class="bg-orb bg-orb--two"></div>
+    <div class="bg-orb bg-orb--three"></div>
+    <canvas class="bg-canvas" id="neuralCanvas"></canvas>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ======================= NAVIGATION ======================= -->
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav__brand" href="#home" aria-label="HandSpeak home">
+        <span class="nav__brand-mark" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11V6a2 2 0 1 1 4 0v5"/><path d="M13 11V5a2 2 0 1 1 4 0v6"/><path d="M9 11a2 2 0 1 1 4 0v7a3 3 0 0 1-3 3h-.5a7.5 7.5 0 0 1-5.5-2.6L2 16a2 2 0 0 1 1-3.4L9 11Z"/><path d="M17 11v3a3 3 0 0 1-3 3"/>
+          </svg>
+        </span>
+        <span class="nav__brand-text">HandSpeak</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+
+      <ul class="nav__menu" id="navMenu">
+        <li><a class="nav__link is-active" href="#home">Home</a></li>
+        <li><a class="nav__link" href="#recognition">Sign Recognition</a></li>
+        <li><a class="nav__link" href="#features">Features</a></li>
+        <li><a class="nav__link" href="#about">About</a></li>
+        <li><a class="nav__link" href="#status">Project Status</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ======================= HERO / LANDING ======================= -->
+    <section class="hero" id="home">
+      <div class="hero__bg" aria-hidden="true">
+        <img src="{{ url_for('static', filename='images/hero-bg.svg') }}" alt="" />
+        <div class="hero__bg-overlay"></div>
+      </div>
+
+      <div class="hero__inner">
+        <p class="hero__eyebrow">
+          <span class="hero__eyebrow-dot" aria-hidden="true"></span>
+          AI-Powered Hand Sign Recognition
+        </p>
+
+        <h1 class="hero__title">Bridging Communication <span class="hero__gradient">Through AI</span></h1>
+
+        <p class="hero__subtitle">
+          Empowering communication through intelligent hand sign recognition for
+          people with speech and hearing impairments.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#recognition">
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            Start Recognition
+          </a>
+          <a class="btn btn--ghost" href="#features">
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Explore Features
+          </a>
+        </div>
+
+        <div class="hero__stats" aria-hidden="true">
+          <div class="hero__stat">
+            <span class="hero__stat-value">A–Z</span>
+            <span class="hero__stat-label">26 Sign Letters</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-value">2</span>
+            <span class="hero__stat-label">Language Modes</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-value">63</span>
+            <span class="hero__stat-label">Landmark Features</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= FEATURES ======================= -->
+    <section class="section" id="features">
+      <div class="section__head">
+        <h2 class="section__title">Built for <span class="hero__gradient">Accessible Communication</span></h2>
+        <p class="section__sub">
+          A modern computer-vision pipeline that turns a hand sign into a predicted
+          letter with confidence, in real time.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <article class="feature-card feature-card--active">
+          <div class="feature-card__icon feature-card__icon--hand" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a2 2 0 1 1 4 0v5"/><path d="M13 11V5a2 2 0 1 1 4 0v6"/><path d="M9 11a2 2 0 1 1 4 0v7a3 3 0 0 1-3 3h-.5a7.5 7.5 0 0 1-5.5-2.6L2 16a2 2 0 0 1 1-3.4L9 11Z"/><path d="M17 11v3a3 3 0 0 1-3 3"/></svg>
+          </div>
+          <h3 class="feature-card__title">Hand Sign Recognition</h3>
+          <p class="feature-card__desc">
+            Detect and classify A–Z hand signs in ASL and ISL using MediaPipe
+            hand landmarks and a Random Forest model.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-card__icon feature-card__icon--ai" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 9l3-3M9 15l-3 3M15 15l3 3M9 9 6 6"/></svg>
+          </div>
+          <h3 class="feature-card__title">AI / Machine Learning</h3>
+          <p class="feature-card__desc">
+            A deterministic landmark pipeline with normalized coordinates,
+            geometric features, and confidence-ranked top-k predictions.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-card__icon feature-card__icon--camera" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7 17 10.5v3L23 17V7Z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <h3 class="feature-card__title">Live Camera Capture</h3>
+          <p class="feature-card__desc">
+            Browser webcam access with a mirrored selfie preview and a five-frame
+            burst for stable, majority-vote-smoothed predictions.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-card__icon feature-card__icon--lang" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg>
+          </div>
+          <h3 class="feature-card__title">ASL & ISL Modes</h3>
+          <p class="feature-card__desc">
+            Separate language modes with independent preprocessing and models, so
+            each sign language is recognized on its own pipeline.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-card__icon feature-card__icon--access" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/><path d="M12 3a9 9 0 0 0 0 18"/></svg>
+          </div>
+          <h3 class="feature-card__title">Accessibility First</h3>
+          <p class="feature-card__desc">
+            Clear labels, keyboard focus states, reduced-motion support, and a
+            responsive layout designed for inclusive use.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-card__icon feature-card__icon--status" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="feature-card__title">Confidence & Top-k</h3>
+          <p class="feature-card__desc">
+            Every prediction includes the top letter, its confidence score, and a
+            ranked list of the five most likely letters.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================= SIGN RECOGNITION WORKSPACE ======================= -->
+    <section class="section" id="recognition">
+      <div class="section__head">
+        <h2 class="section__title">Sign Recognition Workspace</h2>
+        <p class="section__sub">
+          Point your camera at a hand sign, capture a frame, and classify it with
+          the trained MediaPipe + Random Forest model.
+        </p>
+      </div>
+
+      <div class="field-row field-row--center">
+        <label class="field-label" id="languageLabel">Recognition Mode</label>
+        <div class="segmented" role="radiogroup" aria-labelledby="languageLabel">
+          <button type="button" class="segmented__btn is-active" data-language="ASL" role="radio" aria-checked="true">ASL — American</button>
+          <button type="button" class="segmented__btn" data-language="ISL" role="radio" aria-checked="false">ISL — Indian</button>
+        </div>
+        <p class="field-hint" id="languageHint">ASL uses one-hand MediaPipe landmarks + Random Forest (A–Z).</p>
+      </div>
+
+      <div class="workspace workspace--camera">
+        <!-- PRIMARY: live webcam capture -->
+        <div class="workspace__camera">
+          <div class="camera-stage" id="cameraStage">
+            <video id="cameraVideo" class="camera-video" autoplay playsinline muted></video>
+            <canvas id="captureCanvas" class="capture-canvas hidden" aria-hidden="true"></canvas>
+
+            <div class="camera-placeholder" id="cameraPlaceholder">
+              <div class="camera-placeholder__icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7 17 10.5v3L23 17V7Z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+              </div>
+              <p class="camera-placeholder__title">Camera is off</p>
+              <p class="camera-placeholder__hint">Start recognition to enable your camera.</p>
+            </div>
+
+            <div class="camera-status hidden" id="cameraStatus" aria-live="polite">
+              <span class="camera-status__dot" aria-hidden="true"></span>
+              <span id="cameraStatusText">Camera live</span>
+            </div>
+
+            <p class="camera-message hidden" id="cameraMessage" aria-live="polite"></p>
+          </div>
+
+          <div class="camera-controls">
+            <button type="button" class="btn btn--primary" id="startCameraBtn">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-14 9V3Z"/></svg>
+              Start Recognition
+            </button>
+            <button type="button" class="btn btn--secondary hidden" id="pauseCameraBtn">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              Pause Recognition
+            </button>
+            <button type="button" class="btn btn--ghost hidden" id="stopCameraBtn">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+              Stop Camera
+            </button>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="workspace__result">
+          <div class="result-card" id="resultCard" aria-live="polite">
+            <p class="result-card__placeholder" id="resultPlaceholder">
+              Your prediction will appear here.
+            </p>
+
+            <div class="result-card__content hidden" id="resultContent">
+              <span class="result-card__label">Predicted Letter</span>
+              <div class="result-card__letter" id="predictionLetter">—</div>
+              <div class="result-card__confidence">
+                <div class="confidence-bar" aria-hidden="true">
+                  <div class="confidence-bar__fill" id="confidenceFill" style="width: 0%"></div>
+                </div>
+                <span class="confidence-text" id="predictionConfidence">Confidence 0%</span>
+              </div>
+              <span class="result-card__lang" id="predictionLanguage">Mode: ASL</span>
+
+              <div class="top-k" id="topK"></div>
+
+              <p class="result-card__error hidden" id="errorMessage"></p>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn--primary btn--predict" id="predictBtn" disabled>
+            <span class="btn__spinner hidden" id="predictSpinner" aria-hidden="true"></span>
+            <span id="predictLabel">Predict Sign</span>
+          </button>
+          <p class="predict-hint" id="predictHint">Start recognition to capture and predict a sign.</p>
+          <div class="detection-status hidden" id="detectionStatus" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- SECONDARY: optional image upload -->
+      <details class="upload-alt">
+        <summary class="upload-alt__summary">
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+          Or upload a static image instead
+        </summary>
+        <div class="upload-alt__body">
+          <div
+            class="dropzone"
+            id="dropZone"
+            role="button"
+            tabindex="0"
+            aria-label="Upload a hand sign image"
+            aria-describedby="dropHint"
+          >
+            <input type="file" id="fileInput" accept="image/png,image/jpeg,image/bmp,image/webp" hidden />
+            <div class="dropzone__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+            </div>
+            <p class="dropzone__title">Drop an image here</p>
+            <p class="dropzone__hint" id="dropHint">or click to browse — PNG, JPG, BMP or WebP (max 8 MB)</p>
+            <div class="preview hidden" id="previewWrap">
+              <img id="preview" class="preview__img" alt="Preview of the selected hand sign" />
+              <button type="button" class="preview__clear" id="clearBtn" aria-label="Remove selected image">
+                <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="upload-actions">
+            <button type="button" class="btn btn--secondary" id="chooseBtn">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.5-3.5L6 21"/></svg>
+              Choose Image
+            </button>
+            <button type="button" class="btn btn--ghost" id="resetBtn" disabled>
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Clear / Reset
+            </button>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ======================= ABOUT ======================= -->
+    <section class="section" id="about">
+      <div class="section__head">
+        <h2 class="section__title">About HandSpeak</h2>
+      </div>
+      <div class="about-card">
+        <p class="about-card__lead">
+          HandSpeak aims to make communication more accessible by combining sign
+          recognition, speech processing, and language technologies in a unified platform.
+        </p>
+        <p class="about-card__body">
+          Today the platform focuses on <strong>image-based sign letter recognition</strong>,
+          powered by a MediaPipe hand-landmark pipeline and Random Forest models for both
+          American and Indian Sign Language. Speech recognition, text-to-speech, translation,
+          and sentence-level communication are planned for future iterations and are not yet
+          operational.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================= PROJECT STATUS ======================= -->
+    <section class="section" id="status">
+      <div class="section__head">
+        <h2 class="section__title">Project Status</h2>
+        <p class="section__sub">A transparent view of what works today and what is planned.</p>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-group">
+          <h3 class="status-group__title status-group__title--done">Implemented</h3>
+          <ul class="status-list">
+            <li class="status-item status-item--done">
+              <span class="status-item__mark" aria-hidden="true">✓</span>
+              ASL / ISL image-based letter recognition
+            </li>
+            <li class="status-item status-item--done">
+              <span class="status-item__mark" aria-hidden="true">✓</span>
+              MediaPipe + Random Forest prediction (A–Z, 26 classes)
+            </li>
+            <li class="status-item status-item--done">
+              <span class="status-item__mark" aria-hidden="true">✓</span>
+              Flask application with prediction API
+            </li>
+            <li class="status-item status-item--done">
+              <span class="status-item__mark" aria-hidden="true">✓</span>
+              Prediction confidence & top-5 results
+            </li>
+          </ul>
+        </div>
+
+        <div class="status-group">
+          <h3 class="status-group__title status-group__title--wip">Experimental / Not Integrated</h3>
+          <ul class="status-list">
+            <li class="status-item status-item--wip">
+              <span class="status-item__mark" aria-hidden="true">•</span>
+              Two-hand ISL landmark model variants
+            </li>
+          </ul>
+        </div>
+
+        <div class="status-group">
+          <h3 class="status-group__title status-group__title--planned">Planned</h3>
+          <ul class="status-list">
+            <li class="status-item status-item--planned">
+              <span class="status-item__mark" aria-hidden="true">◦</span>
+              Speech recognition
+            </li>
+            <li class="status-item status-item--planned">
+              <span class="status-item__mark" aria-hidden="true">◦</span>
+              Text-to-speech
+            </li>
+            <li class="status-item status-item--planned">
+              <span class="status-item__mark" aria-hidden="true">◦</span>
+              English ↔ Tamil translation
+            </li>
+            <li class="status-item status-item--planned">
+              <span class="status-item__mark" aria-hidden="true">◦</span>
+              Speech-to-sign output
+            </li>
+            <li class="status-item status-item--planned">
+              <span class="status-item__mark" aria-hidden="true">◦</span>
+              Sentence-level communication
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>HandSpeak — AI-Powered Hand Sign Recognition System</p>
+    <p class="site-footer__muted">Built with Flask, TensorFlow/Keras, MediaPipe, and Random Forest.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

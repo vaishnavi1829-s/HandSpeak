@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+venv_old_backup/
+.venv/
+env/
+
+# Build / distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# Test / coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Generated / uploaded runtime files
+static/uploads/*
+
+# Weird Windows shell artifacts
+$null
+
+# Large binary assets (not suitable for a source repository)
+trained_model/
+dataset/
+screenshots/
+results/
+output/
+mediapipe/hand_landmarker.task
+
+# Model binaries and datasets
+*.h5
+*.joblib
+*.weights.h5
+*.npy
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.bmp
+*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
